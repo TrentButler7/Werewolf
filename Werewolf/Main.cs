@@ -28,6 +28,12 @@ while (true)
     {
         action.Character.Process(action);
     }
+
+    //NowReset
+    _players.ForEach(x => x.IsProtected = false);
+    actions.Clear();
+
+    //Excecution time
 }
 
 void CreateDefaultPlayers()
@@ -47,7 +53,7 @@ void CreateDefaultPlayers()
     _players.Add(new Player
     {
         PlayerName = "Xenia",
-        Character = new Villager(),
+        Character = new Monk(),
     });
 
     _players.Add(new Player
