@@ -1,40 +1,60 @@
 ﻿using WerewolfNS;
 using WerewolfNS.Characters;
+using WerewolfNS.Enums;
 
-List<Player> _players = new();
-List<CharacterAction> actions = new();
+List<Player> _players = [];
+List<CharacterAction?> _actions = [];
+int nightNumber = 1;
 CreateDefaultPlayers();
 
 while (true)
 {
-    //Night Loop
-    var alivePlayers = _players.Where(x => x.IsAlive);
+    //Build Night Loop
+    _actions = GetPlayersWithActions()
+        .Where(x => x.IsAlive)
+        .Select(x => x.Character.NightActionLoopOne(_players, x))
+        .Concat(_players
+            .Where(x => x.IsAlive)
+            .Select(x => x.Character.NightActionLoopTwo(_players, x)))
+        .ToList();
 
-    foreach (var player in alivePlayers)
+    //Excecute Night Loop
+    foreach (var action in _actions)
     {
-        var actionTaken = player.Character.Night(_players, player);
-
-        if (actionTaken != null)
+        if (action is null)
         {
-            actions.Add(actionTaken);
+            //insert blank action
+        }
+        else
+        {
+            action.Character.Process(action);
         }
     }
 
-    actions = actions
-        .OrderBy(x => x.Character.CHARACTER)
-        .ToList();
+    //Reset
+    Reset();
 
-    foreach (var action in actions)
-    {
-        action.Character.Process(action);
-    }
-
-    //NowReset
-    _players.ForEach(x => x.IsProtected = false);
-    actions.Clear();
-
-    //Excecution time
+    //Day time into vote/excection
 }
+
+void Reset()
+{
+    _players.ForEach(x => x.IsProtected = false);
+    _actions.Clear();
+}
+
+List<Player> GetPlayersWithActions()
+{
+    if (nightNumber == 1)
+    {
+        return [.. _players.Where(x => x.Character.CHARACTER.GetAttribute<ActionTypeAttribute>().ActionType != CharacterNightActionType.EachNightStar)];
+    }
+    else
+    {
+        return [.. _players.Where(x => x.Character.CHARACTER.GetAttribute<ActionTypeAttribute>().ActionType != CharacterNightActionType.YouStartKnowing)];
+    }
+}
+
 
 void CreateDefaultPlayers()
 {
@@ -47,7 +67,7 @@ void CreateDefaultPlayers()
     _players.Add(new Player
     {
         PlayerName = "Jared",
-        Character = new Villager(),
+        Character = new Empath(),
     });
 
     _players.Add(new Player
@@ -59,12 +79,12 @@ void CreateDefaultPlayers()
     _players.Add(new Player
     {
         PlayerName = "Nate",
-        Character = new Villager(),
+        Character = new Empath(),
     });
 
     _players.Add(new Player
     {
         PlayerName = "Thomas",
-        Character = new Villager(),
+        Character = new Empath(),
     });
 }

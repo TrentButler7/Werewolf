@@ -16,7 +16,7 @@ namespace WerewolfNS
 
         public Player()
         {
-            Character = new Villager();
+            Character = new Empath();
         }
     }
 }

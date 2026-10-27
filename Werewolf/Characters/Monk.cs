@@ -1,9 +1,12 @@
-﻿namespace WerewolfNS.Characters
+﻿using WerewolfNS.Enums;
+
+namespace WerewolfNS.Characters
 {
     internal class Monk : ICharacter
     {
         public CharacterType CHARACTER => CharacterType.Monk;
-        public CharacterAction? Night(List<Player> players, Player currentPlayer)
+
+        public CharacterAction? NightActionLoopOne(List<Player> players, Player currentPlayer)
         {
             Console.WriteLine("------------------------------");
             Console.WriteLine(currentPlayer.PlayerName);
@@ -35,9 +38,14 @@
             }
             else
             {
-                Night(players, currentPlayer);
+                NightActionLoopOne(players, currentPlayer);
             }
 
+            return null;
+        }
+
+        public CharacterAction? NightActionLoopTwo(List<Player> players, Player currentPlayer)
+        {
             return null;
         }
 

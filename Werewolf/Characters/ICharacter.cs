@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using WerewolfNS.Enums;
 
 namespace WerewolfNS.Characters
 {
     public interface ICharacter
     {
         CharacterType CHARACTER { get; }
-        CharacterAction? Night(List<Player> players, Player currentPlayer);
+
+        CharacterAction? NightActionLoopOne(List<Player> players, Player currentPlayer);
+        CharacterAction? NightActionLoopTwo(List<Player> players, Player currentPlayer);
         void Process(CharacterAction action);
+
     }
 }

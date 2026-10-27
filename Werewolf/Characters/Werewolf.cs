@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using WerewolfNS.Enums;
 
 namespace WerewolfNS.Characters
 {
     internal class Werewolf : ICharacter
     {
         public CharacterType CHARACTER => CharacterType.Werewolf;
-        public CharacterAction? Night(List<Player> players, Player currentPlayer)
+
+        public CharacterAction? NightActionLoopOne(List<Player> players, Player currentPlayer)
         {
             Console.WriteLine("------------------------------");
             Console.WriteLine(currentPlayer.PlayerName);
@@ -42,9 +39,14 @@ namespace WerewolfNS.Characters
             }
             else
             {
-                Night(players, currentPlayer);
+                NightActionLoopOne(players, currentPlayer);
             }
 
+            return null;
+        }
+
+        public CharacterAction? NightActionLoopTwo(List<Player> players, Player currentPlayer)
+        {
             return null;
         }
 

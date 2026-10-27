@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WerewolfNS;
-using WerewolfNS.Characters;
+﻿using WerewolfNS.Characters;
 
 namespace WerewolfNS
 {
@@ -12,6 +6,6 @@ namespace WerewolfNS
     {
         public Player? Target { get; set; }
         public Player? PlayerWhoDidThisAction { get; set; }
-        public ICharacter Character { get; set; }
+        public required ICharacter Character { get; set; }
     }
 }
