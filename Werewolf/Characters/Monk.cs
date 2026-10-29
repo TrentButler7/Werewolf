@@ -4,7 +4,7 @@ namespace WerewolfNS.Characters
 {
     internal class Monk : ICharacter
     {
-        public CharacterType CHARACTER => CharacterType.Monk;
+        public Character CHARACTER => Character.Monk;
 
         public CharacterAction? NightActionLoopOne(List<Player> players, Player currentPlayer)
         {

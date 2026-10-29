@@ -5,10 +5,19 @@
         public CharacterNightActionType ActionType { get; private set; } = actionType;
     }
 
+    class CharachterTypeAttribute(CharacterType characterType) : Attribute
+    {
+        public CharacterType CharachterType { get; private set; } = characterType;
+    }
+
     public enum CharacterNightActionType
     {
         EachNight,
         EachNightStar,
-        YouStartKnowing
+        YouStartKnowing,
+        WhenYouDie,
+        SetupOnly,
+        Passive,
+        Daytime
     }
 }

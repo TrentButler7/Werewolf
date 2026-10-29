@@ -4,7 +4,7 @@ namespace WerewolfNS.Characters
 {
     internal class Empath : ICharacter
     {
-        public CharacterType CHARACTER  => CharacterType.Empath;
+        public Character CHARACTER  => Character.Empath;
 
         public CharacterAction? NightActionLoopOne(List<Player> _, Player currentPlayer)
         {
@@ -13,12 +13,18 @@ namespace WerewolfNS.Characters
 
         public CharacterAction? NightActionLoopTwo(List<Player> players, Player currentPlayer)
         {
+            var trueNumber = Helpers
+                .GetNeighbors(currentPlayer, players)
+                .Where(x => x.IsGood == false)
+                .Count();
+
+            var numberToGive = currentPlayer.IsDroisened ? Helpers.RandomNumberExcluding(trueNumber, 0, 2) : trueNumber;
+            
+            Console.WriteLine($"You learn a {numberToGive}");
+
             return null;
         }
 
-        public void Process(CharacterAction action)
-        {
-            throw new NotImplementedException();
-        }
+        public void Process(CharacterAction action) { }
     }
 }

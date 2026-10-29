@@ -4,7 +4,7 @@ namespace WerewolfNS.Characters
 {
     public interface ICharacter
     {
-        CharacterType CHARACTER { get; }
+        Character CHARACTER { get; }
 
         CharacterAction? NightActionLoopOne(List<Player> players, Player currentPlayer);
         CharacterAction? NightActionLoopTwo(List<Player> players, Player currentPlayer);

@@ -2,9 +2,9 @@
 
 namespace WerewolfNS.Characters
 {
-    internal class Werewolf : ICharacter
+    internal class Imp : ICharacter
     {
-        public CharacterType CHARACTER => CharacterType.Werewolf;
+        public Character CHARACTER => Character.Imp;
 
         public CharacterAction? NightActionLoopOne(List<Player> players, Player currentPlayer)
         {
@@ -12,14 +12,9 @@ namespace WerewolfNS.Characters
             Console.WriteLine(currentPlayer.PlayerName);
             Console.WriteLine("Who to kill");
 
-            var playersWhoAreNotWerewolfs = players
-                .Where(x => x.Character.CHARACTER != CharacterType.Werewolf)
-                .Where(x => x.IsAlive)
-                .ToList();
-
-            for (int i = 1; i <= playersWhoAreNotWerewolfs.Count; i++)
+            for (int i = 1; i <= players.Count; i++)
             {
-                Console.WriteLine($"{i}: {playersWhoAreNotWerewolfs[i - 1].PlayerName}");
+                Console.WriteLine($"{i}: {players[i - 1].PlayerName}");
             }
             Console.WriteLine("?");
 
@@ -28,7 +23,7 @@ namespace WerewolfNS.Characters
 
             if (validSelection)
             {
-                var player = playersWhoAreNotWerewolfs.ElementAt(playerInt - 1);
+                var player = players.ElementAt(playerInt - 1);
 
                 return new CharacterAction
                 {
@@ -55,7 +50,7 @@ namespace WerewolfNS.Characters
             if (action.Target == null)
                 throw new Exception("Werewolf has no Target");
 
-            if (action.Target.IsProtected == false)
+            if (action.Target.IsProtected == false || action.Target.Character.CHARACTER == Character.Soldier)
             {
                 action.Target.IsAlive = false;
             }
