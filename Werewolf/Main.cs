@@ -1,12 +1,17 @@
-﻿using WerewolfNS;
+﻿using System.Runtime.InteropServices;
+using WerewolfNS;
 using WerewolfNS.Characters;
 
 List<Player> _players = [];
 List<CharacterAction?> _actions = [];
+List<ICharacter> _tokenBag = [];
 int nightNumber = 1;
-CreateDefaultPlayers();
+bool adminMode = true;
 
-//AssignTokens();
+CreateDefaultPlayers();
+CreateBag();
+AssignTokens();
+PrintGameState(adminMode);
 
 while (true)
 {
@@ -15,41 +20,48 @@ while (true)
     //Run Loop One
     foreach (var player in aliveAtStartOfNight)
     {
+        PrintStartOrEndOfAction(player, false);
+
         if (player.HasActionThisNight(nightNumber))
         {
-            _actions.Add(player.Character.NightActionLoopOne(_players, player));
+            _actions.Add(player.Character?.NightActionLoopOne(_players, player));
         }
         else
         {
             Console.WriteLine("Blank Action");
         }
+
+        PrintStartOrEndOfAction(player, true);
     }
 
     //Process
     foreach (var action in _actions.OfType<CharacterAction>().OrderBy(x => x.Character.CHARACTER))
     {
         action.Character.Process(action);
-        //Insert end of action clear screen here
     }
 
     //Run Loop 2
     foreach (var player in aliveAtStartOfNight)
     {
+        PrintStartOrEndOfAction(player, false);
+
         if (player.HasActionThisNight(nightNumber))
         {
-            player.Character.NightActionLoopTwo(_players, player);
+            player.Character?.NightActionLoopTwo(_players, player);
         }
         else
         {
             Console.WriteLine("Blank Action");
         }
+
+        PrintStartOrEndOfAction(player, true);
     }
 
     //Reset
     Reset();
     //CheckForEndOfGame
 
-    PrintGameState();
+    PrintGameState(adminMode);
 
     //Day time into vote/excection, virgin check
     Console.ReadLine();
@@ -65,23 +77,54 @@ void Reset()
     _actions.Clear();
 }
 
-//List<Player> GetPlayersWithActions()
-//{
-//    if (nightNumber == 1)
-//    {
-//        return [.. _players.Where(x => x.Character.CHARACTER.GetAttribute<ActionTypeAttribute>().ActionType != CharacterNightActionType.EachNightStar)];
-//    }
-//    else
-//    {
-//        return [.. _players.Where(x => x.Character.CHARACTER.GetAttribute<ActionTypeAttribute>().ActionType != CharacterNightActionType.YouStartKnowing)];
-//    }
-//}
-
-void PrintGameState()
+void PrintGameState(bool showRolesAndAlignments)
 {
+    Console.WriteLine($"Night {nightNumber}");
+
     foreach (var player in _players)
     {
-        Console.WriteLine($"Player: {player.PlayerName}, {(player.IsAlive ? "Alive" : "Dead")}");
+        if (showRolesAndAlignments)
+        {
+            Console.WriteLine($"Player: {player.PlayerName}, {(player.IsAlive ? "Alive" : "Dead")}, {player.Character}, {(player.IsGood ? "Good" : "Evil")}");
+        }
+        else
+        {
+            Console.WriteLine($"Player: {player.PlayerName}, {(player.IsAlive ? "Alive" : "Dead")}");
+        }
+    }
+
+    Console.ReadLine();
+    Console.Clear();
+}
+
+void PrintStartOrEndOfAction(Player player, bool isEndOfTurn)
+{
+    Console.WriteLine($"{player.PlayerName}, press enter to {(isEndOfTurn ? "end" : "start")} your action");
+    Console.ReadLine();
+    Console.Clear();
+}
+
+void AssignTokens()
+{
+    if (_tokenBag.Count != _players.Count)
+    {
+        throw new Exception("Bag not equal to player count");
+    }
+
+    Random.Shared.Shuffle(CollectionsMarshal.AsSpan(_tokenBag));
+
+    foreach (var player in _players)
+    {
+        player.Character = _tokenBag.First();
+        _tokenBag.RemoveAt(0);
+
+        player.IsGood = player.IsMinionOrDemon() == false;
+    }
+
+    //Sanity check
+    if (_players.Any(x => x.Character is null))
+    {
+        throw new Exception("Not all charachters have tokens");
     }
 }
 
@@ -90,35 +133,30 @@ void CreateDefaultPlayers()
     _players.Add(new Player
     {
         PlayerName = "Trent",
-        Character = new Imp(),
-        IsGood = false
     });
 
     _players.Add(new Player
     {
         PlayerName = "Jared",
-        Character = new Empath(),
-        IsGood = true
     });
 
     _players.Add(new Player
     {
         PlayerName = "Xenia",
-        Character = new Monk(),
-        IsGood = true
     });
 
     _players.Add(new Player
     {
         PlayerName = "Nate",
-        Character = new Empath(),
-        IsGood = true
     });
 
     _players.Add(new Player
     {
         PlayerName = "Thomas",
-        Character = new Empath(),
-        IsGood = true
     });
+}
+
+void CreateBag()
+{
+    _tokenBag = [new Imp(), new Empath(), new Monk(), new Empath(), new Empath()];
 }

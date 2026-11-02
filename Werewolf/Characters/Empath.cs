@@ -15,8 +15,7 @@ namespace WerewolfNS.Characters
         {
             var trueNumber = Helpers
                 .GetNeighbors(currentPlayer, players)
-                .Where(x => x.IsGood == false)
-                .Count();
+                .Count(x => x.IsGood == false);
 
             var numberToGive = currentPlayer.IsDroisened ? Helpers.RandomNumberExcluding(trueNumber, 0, 2) : trueNumber;
             

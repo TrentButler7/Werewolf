@@ -5,7 +5,7 @@ namespace WerewolfNS
     public class Player
     {
         public string? PlayerName { get; set; }
-        public required ICharacter Character { get; set; }
+        public ICharacter? Character { get; set; }
 
         //Status Bools
         public bool IsAlive { get; set; } = true;

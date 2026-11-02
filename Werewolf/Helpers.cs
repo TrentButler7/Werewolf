@@ -11,9 +11,16 @@ namespace WerewolfNS
             return enumType.GetField(name).GetCustomAttributes(false).OfType<TAttribute>().SingleOrDefault();
         }
 
+        public static bool IsMinionOrDemon(this Player player)
+        {
+            var charType = player.Character?.CHARACTER.GetAttribute<CharachterTypeAttribute>().CharachterType;
+
+            return charType == CharacterType.Minion || charType == CharacterType.Demon;
+        }
+
         public static bool HasActionThisNight(this Player player, int nightNumber)
         {
-            var actionType = player.Character.CHARACTER.GetAttribute<ActionTypeAttribute>().ActionType;
+            var actionType = player.Character?.CHARACTER.GetAttribute<ActionTypeAttribute>().ActionType;
 
             if (nightNumber == 1)
             {
