@@ -3,14 +3,17 @@
     //The order of these, determines the order of process operation
     public enum Character
     {
+        //Done
         [ActionType(CharacterNightActionType.EachNightStar)]
         [CharachterType(CharacterType.Townsfolk)]
         Monk,
 
+        //Done
         [ActionType(CharacterNightActionType.EachNightStar)]
         [CharachterType(CharacterType.Demon)]
         Imp,
 
+        //Done
         [ActionType(CharacterNightActionType.EachNight)]
         [CharachterType(CharacterType.Townsfolk)]
         Empath,
@@ -55,6 +58,7 @@
         [CharachterType(CharacterType.Townsfolk)]
         Virgin,
 
+        //Done
         [ActionType(CharacterNightActionType.EachNight)]
         [CharachterType(CharacterType.Townsfolk)]
         FortuneTeller,
@@ -83,6 +87,7 @@
         [CharachterType(CharacterType.Minion)]
         Spy,
 
+        //Done
         [ActionType(CharacterNightActionType.EachNight)]
         [CharachterType(CharacterType.Minion)]
         Poisoner,

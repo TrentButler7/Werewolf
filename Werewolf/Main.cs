@@ -1,6 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using WerewolfNS;
 using WerewolfNS.Characters;
+using WerewolfNS.Enums;
 
 List<Player> _players = [];
 List<CharacterAction?> _actions = [];
@@ -8,6 +9,7 @@ List<ICharacter> _tokenBag = [];
 int nightNumber = 1;
 bool adminMode = true;
 
+//Create random bag in future
 CreateDefaultPlayers();
 CreateBag();
 AssignTokens();
@@ -57,7 +59,6 @@ while (true)
         PrintStartOrEndOfAction(player, true);
     }
 
-    //Reset
     Reset();
     //CheckForEndOfGame
 
@@ -74,6 +75,7 @@ while (true)
 void Reset()
 {
     _players.ForEach(x => x.IsProtected = false);
+    _players.ForEach(x => x.IsPoisened = false);
     _actions.Clear();
 }
 
@@ -158,5 +160,5 @@ void CreateDefaultPlayers()
 
 void CreateBag()
 {
-    _tokenBag = [new Imp(), new Empath(), new Monk(), new Empath(), new Empath()];
+    _tokenBag = [new Imp(), new Poisoner(), new Monk(), new FortuneTeller(), new Empath()];
 }

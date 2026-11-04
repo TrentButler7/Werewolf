@@ -18,6 +18,13 @@ namespace WerewolfNS
             return charType == CharacterType.Minion || charType == CharacterType.Demon;
         }
 
+        public static bool IsDemon(this Player player)
+        {
+            var charType = player.Character?.CHARACTER.GetAttribute<CharachterTypeAttribute>().CharachterType;
+
+            return charType == CharacterType.Demon;
+        }
+
         public static bool HasActionThisNight(this Player player, int nightNumber)
         {
             var actionType = player.Character?.CHARACTER.GetAttribute<ActionTypeAttribute>().ActionType;
@@ -54,6 +61,30 @@ namespace WerewolfNS
             }
 
             return result;
+        }
+
+        public static Player GetPlayerChoice(List<Player> players)
+        {
+            Console.WriteLine("------------------------------");
+            Console.WriteLine("Who to pick");
+
+            for (int i = 1; i <= players.Count; i++)
+            {
+                Console.WriteLine($"{i}: {players[i - 1].PlayerName}");
+            }
+            Console.WriteLine("?");
+
+            var validSelection = int.TryParse(Console.ReadLine(), out var playerInt);
+            validSelection = playerInt > 0 && playerInt <= players.Count;
+
+            if (validSelection)
+            {
+                var player = players.ElementAt(playerInt - 1);
+
+                return player;
+            }
+
+            return GetPlayerChoice(players);
         }
     }
 }

@@ -14,5 +14,6 @@ namespace WerewolfNS
         public bool IsPoisened { get; set; }
         public bool IsDroisened => IsDrunk || IsPoisened;
         public bool IsGood { get; set; }
+        public bool IsRedHerring { get; set; }
     }
 }
